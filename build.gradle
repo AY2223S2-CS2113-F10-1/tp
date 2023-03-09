@@ -29,7 +29,7 @@ test {
 }
 
 application {
-    mainClass = "Inka"
+    mainClass = "seedu.duke.Duke"
 }
 
 shadowJar {
