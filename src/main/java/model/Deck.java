@@ -36,6 +36,28 @@ public class Deck {
     public String getDeckName() {
         return deckName;
     }
+    public boolean cardIsInDeck(CardUUID cardUUID) {
+        for(CardUUID cardUUIDHolder : cards) {
+            if(cardUUIDHolder.equals(cardUUID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean tagIsInDeck(TagUUID tagUUID) {
+        for(TagUUID tagUUIDHolder : tags) {
+            if(tagUUIDHolder.equals(tagUUID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void setTags(ArrayList<TagUUID> tags) {
+        this.tags = tags;
+    }
 
     public DeckUUID getDeckUUID() {
         return deckUUID;
@@ -57,6 +79,10 @@ public class Deck {
     }
     public void addTag(TagUUID tagUUID) {
         this.tags.add(tagUUID);
+    }
+
+    public void setCards(ArrayList<CardUUID> cards) {
+        this.cards = cards;
     }
 
     @Override

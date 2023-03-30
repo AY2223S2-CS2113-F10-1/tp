@@ -41,6 +41,15 @@ public class DeckList {
         }
         return null;
     }
+
+    public Deck findDeckFromUUID(DeckUUID deckUUID) {
+        for (Deck deck : deckList) {
+            if (deck.getDeckUUID().equals(deckUUID)) {
+                return deck;
+            }
+        }
+        return null;
+    }
     public void delete(int id) {
         this.deckList.remove(id);
     }

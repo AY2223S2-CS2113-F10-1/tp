@@ -141,6 +141,14 @@ public class UserInterface {
     public void printAddCardToDeckSuccess(CardUUID cardUUID, DeckUUID deckUUID) {
         System.out.println("Successfully added card " + cardUUID + " to deck " + deckUUID);
     }
+
+    public void printRemoveCardFromDeckSuccess(CardUUID cardUUID, String deckName) {
+        System.out.println("Successfully removed card " + cardUUID + " from deck " + deckName);
+    }
+
+    public void printRemoveTagFromDeckSuccess(TagUUID tagUUID, String deckName) {
+        System.out.println("Successfully removed tag " + tagUUID + " from deck " + deckName);
+    }
     public void printAddTagToDeckSuccess(TagUUID tagUUID, DeckUUID deckUUID) {
         System.out.println("Successfully added tag " + tagUUID + " to deck " + deckUUID);
     }

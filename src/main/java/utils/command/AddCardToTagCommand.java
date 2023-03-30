@@ -9,6 +9,7 @@ import model.Tag;
 import model.TagList;
 import model.TagUUID;
 import utils.UserInterface;
+import utils.exceptions.CardInTagException;
 import utils.exceptions.InkaException;
 import utils.exceptions.UUIDWrongFormatException;
 import utils.storage.IDataStorage;
@@ -45,6 +46,8 @@ public class AddCardToTagCommand extends Command {
             ui.printTagCreationSuccess(tagName);
             tagToAdd = new Tag(tagName, cardUUID);
             tagList.addTag(tagToAdd);
+        } else if(tagToAdd.cardIsInTag(cardUUID)) {
+            throw new CardInTagException();
         } else {
             tagToAdd.addCard(cardUUID);
         }

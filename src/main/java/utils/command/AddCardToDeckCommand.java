@@ -9,6 +9,7 @@ import model.DeckList;
 import model.DeckUUID;
 import model.TagList;
 import utils.UserInterface;
+import utils.exceptions.CardInDeckException;
 import utils.exceptions.InkaException;
 import utils.exceptions.UUIDWrongFormatException;
 import utils.storage.IDataStorage;
@@ -38,6 +39,8 @@ public class AddCardToDeckCommand extends Command {
             ui.printDeckCreationSuccess();
             deckToAdd = new Deck(deckName, cardUUID);
             deckList.addDeck(deckToAdd);
+        } else if(deckToAdd.cardIsInDeck(cardUUID)) {
+            throw new CardInDeckException();
         } else {
             deckToAdd.addCard(cardUUID);
         }

@@ -10,6 +10,7 @@ import model.TagUUID;
 import utils.UserInterface;
 import utils.exceptions.CreateTagBeforeAddingToDeck;
 import utils.exceptions.InkaException;
+import utils.exceptions.TagInDeckException;
 import utils.exceptions.UUIDWrongFormatException;
 import utils.storage.IDataStorage;
 
@@ -42,6 +43,8 @@ public class AddTagToDeckCommand extends Command {
             ui.printDeckCreationSuccess();
             deckToAdd = new Deck(deckName, tagUUID);
             deckList.addDeck(deckToAdd);
+        } else if(deckToAdd.tagIsInDeck(tagUUID)) {
+            throw new TagInDeckException();
         } else {
             deckToAdd.addTag(tagUUID);
         }

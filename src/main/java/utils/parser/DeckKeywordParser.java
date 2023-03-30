@@ -12,6 +12,9 @@ import utils.command.ListCardsUnderDeckCommand;
 import utils.command.ListDecksCommand;
 import utils.command.ListTagsUnderDeckCommand;
 import utils.command.PrintHelpCommand;
+import utils.command.RemoveCardFromDeckCommand;
+import utils.command.RemoveTagFromDeckCommand;
+import utils.exceptions.InkaException;
 import utils.exceptions.UnrecognizedCommandException;
 
 public class DeckKeywordParser extends KeywordParser{
@@ -27,9 +30,8 @@ public class DeckKeywordParser extends KeywordParser{
     private static Options buildDeleteOptions() {
         Options options = new Options();
         options.addRequiredOption("d", "deck", true, "deck name");
-        // extra stuff down here
-        //        options.addOption("c", "card", true, "card name");
-        //        options.addOption("t", "tag", true, "tag name");
+        options.addOption("c", "card", true, "card name (optional)");
+        options.addOption("t", "tag", true, "tag name (optional)");
 
         return options;
     }
@@ -42,13 +44,13 @@ public class DeckKeywordParser extends KeywordParser{
     }
     private static Options buildListOptions() {
         Options options = new Options();
-        options.addOption("c", "cards", true, "deck name");
-        options.addOption("t", "tags", true, "deck name");
+        options.addOption("c", "cards", true, "deck name to list cards from (optional)");
+        options.addOption("t", "tags", true, "deck name to list tags from (optional)");
         return options;
     }
     @Override
     protected Command handleAction(String action, List<String> tokens)
-            throws ParseException, UnrecognizedCommandException {
+            throws ParseException, UnrecognizedCommandException, InkaException {
         switch (action) {
         case DELETE_ACTION:
             return handleDelete(tokens);
@@ -63,11 +65,17 @@ public class DeckKeywordParser extends KeywordParser{
         }
     }
 
-    private Command handleDelete(List<String> tokens) throws ParseException {
+    private Command handleDelete(List<String> tokens) throws ParseException, InkaException {
         CommandLine cmd = parser.parse(buildDeleteOptions(), tokens.toArray(new String[0]));
 
         String deckName = cmd.getOptionValue("d");
-        return new DeleteDeckCommand(deckName);
+        if(cmd.hasOption("c")) {
+            return new RemoveCardFromDeckCommand(cmd.getOptionValue("c"), deckName);
+        } else if (cmd.hasOption("t")) {
+            return new RemoveTagFromDeckCommand(cmd.getOptionValue("t"), deckName);
+        } else {
+            return new DeleteDeckCommand(deckName);
+        }
     }
 
     private Command handleList(List<String> tokens) throws ParseException {

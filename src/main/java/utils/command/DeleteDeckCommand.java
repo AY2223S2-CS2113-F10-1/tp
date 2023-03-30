@@ -55,10 +55,6 @@ public class DeleteDeckCommand extends Command{
             throws InkaException {
         removeDeckFromCards(cardList, deckList, ui);
         removeDeckFromTags(tagList, deckList, ui);
-        boolean isDeleted = deckList.deleteDeckByUUID(deckUUID);
-        if(isDeleted==false) {
-            //throw exception here
-        }
         ui.printRemoveDeckFromDeckList(deckUUID);
     }
 }

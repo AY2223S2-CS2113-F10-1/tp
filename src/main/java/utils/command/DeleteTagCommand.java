@@ -3,7 +3,9 @@ package utils.command;
 import model.Card;
 import model.CardList;
 import model.CardUUID;
+import model.Deck;
 import model.DeckList;
+import model.DeckUUID;
 import model.Tag;
 import model.TagList;
 import model.TagUUID;
@@ -15,6 +17,7 @@ import utils.storage.IDataStorage;
 public class DeleteTagCommand extends Command {
     private String tagName;
     private TagUUID tagUUID;
+    private Tag tag;
 
     public DeleteTagCommand(String tagName) {
         this.tagName = tagName;
@@ -28,17 +31,27 @@ public class DeleteTagCommand extends Command {
      * @param ui       The userInterface to print the success of removal of the tag from the cards.
      */
     private void removeTagFromCards(CardList cardList, TagList tagList, UserInterface ui) throws InkaException {
-        Tag tag = tagList.findTagFromName(tagName);
+        this.tag = tagList.findTagFromName(tagName);
         if (tag == null) {
             throw new TagNotFoundException();
         }
-        tagUUID = tag.getUUID();
+        this.tagUUID = tag.getUUID();
 
         //for each card whose uuid is listed under the tag, remove the tag uuid from that card
-        for (CardUUID cardUUID : tag.getCardsUUID()) {
-            Card affectedCard = cardList.findCardFromUUID(cardUUID);
-            affectedCard.removeTag(tagUUID);
-            ui.printRemoveTagFromCard(affectedCard.getUuid(), tagUUID);
+        if(!tag.cardEmpty()) {
+            for (CardUUID cardUUID : tag.getCardsUUID()) {
+                Card affectedCard = cardList.findCardFromUUID(cardUUID);
+                affectedCard.removeTag(tagUUID);
+                ui.printRemoveTagFromCard(affectedCard.getUuid(), tagUUID);
+            }
+        }
+
+    }
+
+    private void removeTagsFromDecks(DeckList deckList) {
+        for(DeckUUID deckUUID: this.tag.getDecks()) {
+            Deck deckToDeleteTagFrom = deckList.findDeckFromUUID(deckUUID);
+            deckToDeleteTagFrom.getTagsUUID().remove(tag.getUUID());
         }
     }
 
@@ -46,8 +59,8 @@ public class DeleteTagCommand extends Command {
     public void execute(CardList cardList, TagList tagList, DeckList deckList, UserInterface ui, IDataStorage storage)
             throws InkaException {
         removeTagFromCards(cardList, tagList, ui);
-        boolean isDeleted = tagList.deleteTagByUUID(tagUUID);
-        // if isDeleted is false, it means tag doesn't exist in the first place, throw exception here
+        removeTagsFromDecks(deckList);
+        tagList.deleteTagByUUID(this.tagUUID);
         ui.printRemoveTagFromTagList(tagUUID);
     }
 }

@@ -79,6 +79,13 @@ public class Card {
     public void removeDecks(DeckUUID deckUUID) {
         decks.remove(deckUUID);
     }
+    public boolean deckEmpty() {
+        return this.decks.isEmpty();
+    }
+
+    public boolean tagEmpty() {
+        return this.tags.isEmpty();
+    }
 
     @Override
     public String toString() {

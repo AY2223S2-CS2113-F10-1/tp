@@ -20,7 +20,7 @@ public class ListCardsUnderDeckCommand extends Command{
         this.deckName = deckName;
     }
 
-    private CardList findCardSUnderDeck(CardList cardList, DeckList deckList) throws InkaException {
+    private CardList findCardsUnderDeck(CardList cardList, DeckList deckList) throws InkaException {
         Deck foundDeck = deckList.findDeckFromName(deckName);
         if(foundDeck==null) {
             throw new DeckNotFoundException();
@@ -41,7 +41,7 @@ public class ListCardsUnderDeckCommand extends Command{
     @Override
     public void execute(CardList cardList, TagList tagList, DeckList deckList, UserInterface ui, IDataStorage storage)
             throws InkaException {
-        CardList foundCardList = findCardSUnderDeck(cardList, deckList);
+        CardList foundCardList = findCardsUnderDeck(cardList, deckList);
         ui.printCardList(foundCardList);
     }
 }

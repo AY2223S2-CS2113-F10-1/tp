@@ -15,6 +15,14 @@ public class Tag {
         cards.add(cardUUID);
     }
 
+    public ArrayList<DeckUUID> getDecks() {
+        return decks;
+    }
+
+    public boolean cardEmpty() {
+        return cards.isEmpty();
+    }
+
     public TagUUID getUUID() {
         return this.uuid;
     }
@@ -25,6 +33,14 @@ public class Tag {
 
     public void editTagName(String newTagName) {
         this.tagName = newTagName;
+    }
+    public boolean cardIsInTag(CardUUID cardUUID) {
+        for(CardUUID cardUUIDList : cards) {
+            if(cardUUIDList.equals(cardUUID)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<CardUUID> getCardsUUID() {
