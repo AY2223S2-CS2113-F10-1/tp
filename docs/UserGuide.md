@@ -13,21 +13,79 @@
 
 ## Features 
 
-{Give detailed description of each feature}
+### Editing a Tag: `tag edit`
+Edit the name of a existing tag.
 
-### Adding a todo: `todo`
-Adds a new item to the list of todo items.
+Format: `tag edit -n arg<tagNameNew> -o arg<tagNameOld>`
 
-Format: `todo n/TODO_NAME d/DEADLINE`
-
-* The `DEADLINE` can be in a natural language format.
-* The `TODO_NAME` cannot contain punctuation.  
+* The `tagNameOld` should be the name of an existing tag.
 
 Example of usage: 
 
-`todo n/Write the rest of the User Guide d/next week`
+`tag edit -n CS2113 -o CS2113T`
 
-`todo n/Refactor the User Guide to remove passive voice d/13/04/2020`
+Sample output:
+```
+tag edit -n CS2113 -o CS2113T
+Tag 01a6967c-f25f-4f61-ace1-324a07bc3761tag name has been changed from CS2113 to CS2113T
+```
+
+### Deleting a Tag: `tag delete`
+Delete an existing tag. All cards under the affected tag will not be deleted, but have the tag removed from them.
+
+Format: `tag delete -t arg<tagName>`
+
+* The `tagName` should be the name of an existing tag.
+
+Example of usage: 
+
+`tag delete -t CS2040C`
+
+Sample output: 
+```
+tag delete -t CS2040C
+Successfully removed tag d396e012-b6ca-45e4-aa70-ac5fd994a8a8 from card 3b86b31c-6289-4716-a5c6-5afd43b9bbd3
+Successfully removed tag d396e012-b6ca-45e4-aa70-ac5fd994a8a8 from the tag list.
+```
+
+### List all Tags: `tag list`
+List all tags 
+
+Format: `tag list`
+
+Example of usage: 
+
+`tag list`
+
+Sample output:
+```
+Here is your current list of tags:
+1.Tag name : CS2040C, tag uuid : d396e012-b6ca-45e4-aa70-ac5fd994a8a8
+2.Tag name : CS2113, tag uuid : 01a6967c-f25f-4f61-ace1-324a07bc3761
+```
+
+
+### List Cards under Tag: `tag list`
+List all cards which are under the specified tag
+
+Format: `tag list -t arg<tagName>`
+
+* The `tagName` should be the name of an existing tag.
+
+Example of usage: 
+
+`
+tag list -t CS2040C
+`
+
+Sample output:
+```
+tag list -t CS2040C
+Here is a list of your cards :
+1.Qn: fdf
+Ans: ffffffffff
+UUID:  3b86b31c-6289-4716-a5c6-5afd43b9bbd3
+```
 
 ## FAQ
 
