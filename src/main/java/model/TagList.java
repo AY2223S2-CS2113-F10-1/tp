@@ -2,8 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import utils.exceptions.CardNotFoundException;
 import utils.exceptions.TagNotFoundException;
 
 public class TagList {
@@ -49,21 +47,6 @@ public class TagList {
                 return tag;
             }
         }
-        return null;
-    }
-
-    public Tag findTag(TagSelector tagSelector) throws TagNotFoundException {
-        if (tagSelector.getIndex().isPresent()) {
-            // Index from user input is 1-indexed
-            try {
-                return tags.get(tagSelector.getIndex().get() - 1);
-            } catch (IndexOutOfBoundsException e) {
-                throw new TagNotFoundException();
-            }
-        } else if (tagSelector.getUuid().isPresent()) {
-            return findTagFromUUID(tagSelector.getUuid().get());
-        }
-
         return null;
     }
 
