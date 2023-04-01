@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import model.CardSelector;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -103,7 +104,7 @@ public abstract class KeywordParser {
      * @return Formatted help string
      */
     protected String formatHelpMessage(String keyword, String[] actionList, String[] headerList,
-            Options[] optionsList) {
+                                       Options[] optionsList) {
         assert optionsList.length == headerList.length;
         assert optionsList.length == actionList.length;
 

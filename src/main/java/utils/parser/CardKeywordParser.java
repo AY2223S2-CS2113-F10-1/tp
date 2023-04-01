@@ -1,6 +1,7 @@
 package utils.parser;
 
 import java.util.List;
+
 import model.Card;
 import model.CardSelector;
 import org.apache.commons.cli.CommandLine;
@@ -41,22 +42,22 @@ public class CardKeywordParser extends KeywordParser {
     protected Command handleAction(String action, List<String> tokens)
             throws ParseException, InkaException {
         switch (action) {
-        case ADD_ACTION:
-            return handleAdd(tokens);
-        case DELETE_ACTION:
-            return handleDelete(tokens);
-        case DECK_ACTION:
-            return handleDeck(tokens);
-        case HELP_ACTION:
-            return handleHelp();
-        case LIST_ACTION:
-            return handleList();
-        case TAG_ACTION:
-            return handleTag(tokens);
-        case VIEW_ACTION:
-            return handleView(tokens);
-        default:
-            throw new UnrecognizedCommandException();
+            case ADD_ACTION:
+                return handleAdd(tokens);
+            case DELETE_ACTION:
+                return handleDelete(tokens);
+            case DECK_ACTION:
+                return handleDeck(tokens);
+            case HELP_ACTION:
+                return handleHelp();
+            case LIST_ACTION:
+                return handleList();
+            case TAG_ACTION:
+                return handleTag(tokens);
+            case VIEW_ACTION:
+                return handleView(tokens);
+            default:
+                throw new UnrecognizedCommandException();
         }
     }
 
@@ -88,7 +89,7 @@ public class CardKeywordParser extends KeywordParser {
         // Combine all action
         String[] actionList = {ADD_ACTION, DELETE_ACTION, LIST_ACTION, TAG_ACTION, VIEW_ACTION, DECK_ACTION};
         String[] headerList = new String[]{"Adding cards",
-            "Deleting cards", "List all cards", "Tagging cards", "View cards", "Adding cards to Deck"};
+                "Deleting cards", "List all cards", "Tagging cards", "View cards", "Adding cards to Deck"};
         Options[] optionsList = {addOptions, deleteOptions, tagOptions, viewOptions, deckOptions};
         String helpMessage = formatHelpMessage("card", actionList, headerList, optionsList);
         return new PrintHelpCommand(helpMessage);
@@ -108,8 +109,7 @@ public class CardKeywordParser extends KeywordParser {
             // Notify user
             String tagName = String.join("-", tagNameTokens);
             return new AddCardToTagCommand(tagName, cardSelector);
-        }
-        else {
+        } else {
             return new AddCardToTagCommand(tagNameTokens[0], cardSelector);
         }
     }

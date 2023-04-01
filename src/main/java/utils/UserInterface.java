@@ -2,6 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import model.Card;
 import model.CardList;
 import model.CardUUID;
@@ -149,6 +150,7 @@ public class UserInterface {
     public void printRemoveTagFromDeckSuccess(TagUUID tagUUID, String deckName) {
         System.out.println("Successfully removed tag " + tagUUID + " from deck " + deckName);
     }
+
     public void printAddTagToDeckSuccess(TagUUID tagUUID, DeckUUID deckUUID) {
         System.out.println("Successfully added tag " + tagUUID + " to deck " + deckUUID);
     }
@@ -164,6 +166,7 @@ public class UserInterface {
     public void printRemoveTagFromCard(CardUUID cardUUID, TagUUID tagUUID) {
         System.out.println("Successfully removed tag " + tagUUID + " from card " + cardUUID);
     }
+
     public void printRemoveDeckFromCard(CardUUID cardUUID, DeckUUID deckUUID) {
         System.out.println("Successfully removed deck " + deckUUID + " from card " + cardUUID);
     }

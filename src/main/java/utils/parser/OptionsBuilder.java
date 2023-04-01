@@ -32,7 +32,7 @@ public class OptionsBuilder {
         this.action = action;
     }
 
-    public Options buildOptions () {
+    public Options buildOptions() {
         switch (model) {
             case CARD_MODEl:
                 switch (action) {

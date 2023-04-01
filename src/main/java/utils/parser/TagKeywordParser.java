@@ -1,6 +1,7 @@
 package utils.parser;
 
 import java.util.List;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
@@ -34,18 +35,18 @@ public class TagKeywordParser extends KeywordParser {
     protected Command handleAction(String action, List<String> tokens)
             throws ParseException, InkaException {
         switch (action) {
-        case DECK_ACTION:
-            return handleDeck(tokens);
-        case DELETE_ACTION:
-            return handleDelete(tokens);
-        case EDIT_ACTION:
-            return handleEdit(tokens);
-        case HELP_ACTION:
-            return handleHelp();
-        case LIST_ACTION:
-            return handleList(tokens);
-        default:
-            throw new UnrecognizedCommandException();
+            case DECK_ACTION:
+                return handleDeck(tokens);
+            case DELETE_ACTION:
+                return handleDelete(tokens);
+            case EDIT_ACTION:
+                return handleEdit(tokens);
+            case HELP_ACTION:
+                return handleHelp();
+            case LIST_ACTION:
+                return handleList(tokens);
+            default:
+                throw new UnrecognizedCommandException();
         }
     }
 

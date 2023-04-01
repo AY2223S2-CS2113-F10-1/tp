@@ -16,7 +16,7 @@ public class AddCardCommand extends Command {
     }
 
     @Override
-    public void execute(CardList cardList, TagList tagList, DeckList deckList,UserInterface ui, IDataStorage storage)
+    public void execute(CardList cardList, TagList tagList, DeckList deckList, UserInterface ui, IDataStorage storage)
             throws InkaException {
         cardList.addCard(card);
         ui.printAddQuestionSuccess();

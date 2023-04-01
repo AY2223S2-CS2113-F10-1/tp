@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import utils.exceptions.TagNotFoundException;
 
 public class TagList {
