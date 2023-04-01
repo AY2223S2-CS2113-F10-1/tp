@@ -23,7 +23,6 @@ public class OptionsBuilder {
     public static final String EDIT_ACTION = "edit";
     public static final String LIST_ACTION = "list";
 
-
     private static String model = null;
     private static String action = null;
 
@@ -187,8 +186,8 @@ public class OptionsBuilder {
      * @return Configured Option
      */
     protected static Option buildMultipleTokenOption(String option, String longOption, boolean hasArg,
-                                                     String description,
-                                                     boolean required) {
+            String description,
+            boolean required) {
         Option opt = new Option(option, longOption, hasArg, description);
         opt.setArgs(Option.UNLIMITED_VALUES);
         opt.setRequired(required);

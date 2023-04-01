@@ -66,10 +66,11 @@ public class Inka {
             String userInput = ui.getUserInput();
             try {
                 Command command = parser.parseCommand(userInput);
-                command.execute(cardList, tagList, deckList,ui, storage);
+                command.execute(cardList, tagList, deckList, ui, storage);
             } catch (InkaException e) {
                 ui.printException(e);
             }
+            ui.printInputIdentifier();
         }
     }
 }
