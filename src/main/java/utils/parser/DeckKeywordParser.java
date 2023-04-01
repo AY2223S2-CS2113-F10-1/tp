@@ -18,6 +18,8 @@ import utils.exceptions.InkaException;
 import utils.exceptions.UnrecognizedCommandException;
 
 public class DeckKeywordParser extends KeywordParser{
+
+    public static final String DECK_MODEL = "deck";
     public static final String DELETE_ACTION = "delete";
     public static final String EDIT_ACTION = "edit";
     public static final String HELP_ACTION = "help";
@@ -27,27 +29,6 @@ public class DeckKeywordParser extends KeywordParser{
         this.parser = new DefaultParser(false);
     }
 
-    private static Options buildDeleteOptions() {
-        Options options = new Options();
-        options.addRequiredOption("d", "deck", true, "deck name");
-        options.addOption("c", "card", true, "card name (optional)");
-        options.addOption("t", "tag", true, "tag name (optional)");
-
-        return options;
-    }
-    private static Options buildEditOptions() {
-        Options options = new Options();
-        options.addRequiredOption("o", "old", true, "Old deck name");
-        options.addRequiredOption("n", "new", true, "New deck name");
-
-        return options;
-    }
-    private static Options buildListOptions() {
-        Options options = new Options();
-        options.addOption("c", "cards", true, "deck name to list cards from (optional)");
-        options.addOption("t", "tags", true, "deck name to list tags from (optional)");
-        return options;
-    }
     @Override
     protected Command handleAction(String action, List<String> tokens)
             throws ParseException, UnrecognizedCommandException, InkaException {
@@ -66,7 +47,8 @@ public class DeckKeywordParser extends KeywordParser{
     }
 
     private Command handleDelete(List<String> tokens) throws ParseException, InkaException {
-        CommandLine cmd = parser.parse(buildDeleteOptions(), tokens.toArray(new String[0]));
+        Options deleteOptions =  new OptionsBuilder(DECK_MODEL, DELETE_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(deleteOptions, tokens.toArray(new String[0]));
 
         String deckName = cmd.getOptionValue("d");
         if(cmd.hasOption("c")) {
@@ -79,7 +61,8 @@ public class DeckKeywordParser extends KeywordParser{
     }
 
     private Command handleList(List<String> tokens) throws ParseException {
-        CommandLine cmd = parser.parse(buildListOptions(), tokens.toArray(new String[0]));
+        Options listOptions =  new OptionsBuilder(DECK_MODEL, LIST_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(listOptions, tokens.toArray(new String[0]));
 
         if (cmd.hasOption("c")) {
             String deckName = cmd.getOptionValue("c");
@@ -92,7 +75,8 @@ public class DeckKeywordParser extends KeywordParser{
         }
     }
     private Command handleEdit(List<String> tokens) throws ParseException {
-        CommandLine cmd = parser.parse(buildEditOptions(), tokens.toArray(new String[0]));
+        Options editOptions =  new OptionsBuilder(DECK_MODEL, EDIT_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(editOptions, tokens.toArray(new String[0]));
 
         String oldDeckName = cmd.getOptionValue("o");
         String newDeckName = cmd.getOptionValue("n");
@@ -100,10 +84,13 @@ public class DeckKeywordParser extends KeywordParser{
     }
 
     private Command handleHelp() {
+        Options editOptions =  new OptionsBuilder(DECK_MODEL, EDIT_ACTION).buildOptions();
+        Options deleteOptions =  new OptionsBuilder(DECK_MODEL, DELETE_ACTION).buildOptions();
+        Options listOptions =  new OptionsBuilder(DECK_MODEL, LIST_ACTION).buildOptions();
         // Combine all actions
         String[] actionList = {EDIT_ACTION, DELETE_ACTION, LIST_ACTION};
         String[] headerList = {"Edit existing decks", "Delete decks", "List decks"};
-        Options[] optionsList = {buildEditOptions(), buildDeleteOptions(), buildListOptions()};
+        Options[] optionsList = {editOptions, deleteOptions, listOptions};
 
         String helpMessage = formatHelpMessage("deck", actionList, headerList, optionsList);
         return new PrintHelpCommand(helpMessage);

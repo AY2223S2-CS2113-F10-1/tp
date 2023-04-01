@@ -21,63 +21,19 @@ import utils.exceptions.UnrecognizedCommandException;
 
 public class CardKeywordParser extends KeywordParser {
 
+    public static final String CARD_MODEL = "card";
     public static final String ADD_ACTION = "add";
     public static final String DELETE_ACTION = "delete";
     public static final String HELP_ACTION = "help";
     public static final String LIST_ACTION = "list";
     public static final String TAG_ACTION = "tag";
     public static final String VIEW_ACTION = "view";
-
     public static final String DECK_ACTION = "deck";
 
     private DefaultParser parser;
 
     public CardKeywordParser() {
         this.parser = new DefaultParser(false);
-    }
-
-    private static Options buildAddOptions() {
-        Options options = new Options();
-
-        Option questionOption = buildMultipleTokenOption("q", "question", true, "card question", true);
-        options.addOption(questionOption);
-
-        Option answerOption = buildMultipleTokenOption("a", "answer", true, "card answer", true);
-        options.addOption(answerOption);
-
-        return options;
-    }
-
-    private static Options buildDeleteOptions() {
-        Options options = new Options();
-        options.addOptionGroup(buildCardSelectOption());
-
-        return options;
-    }
-
-    private static Options buildTagOptions() {
-        Options options = new Options();
-        options.addOptionGroup(buildCardSelectOption());
-
-        Option tag = buildMultipleTokenOption("t", "tag", true, "tag name", true);
-        options.addOption(tag);
-
-        return options;
-    }
-
-    private static Options buildDeckOptions() {
-        Options options = new Options();
-        options.addOptionGroup(buildCardSelectOption());
-        options.addRequiredOption("d", "deck", true, "deck name");
-
-        return options;
-    }
-
-    private static Options buildViewOptions() {
-        Options options = new Options();
-        options.addOptionGroup(buildCardSelectOption());
-
-        return options;
     }
 
     @Override
@@ -105,8 +61,8 @@ public class CardKeywordParser extends KeywordParser {
     }
 
     private Command handleAdd(List<String> tokens) throws ParseException {
-        CommandLine cmd = parser.parse(buildAddOptions(), tokens.toArray(new String[0]));
-
+        Options addOptions = new OptionsBuilder(CARD_MODEL, ADD_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(addOptions, tokens.toArray(new String[0]));
         String question = String.join(" ", cmd.getOptionValues("q"));
         String answer = String.join(" ", cmd.getOptionValues("a"));
         Card card = new Card(question, answer);
@@ -115,7 +71,8 @@ public class CardKeywordParser extends KeywordParser {
     }
 
     private Command handleDelete(List<String> tokens) throws ParseException {
-        CommandLine cmd = parser.parse(buildDeleteOptions(), tokens.toArray(new String[0]));
+        Options deleteOptions = new OptionsBuilder(CARD_MODEL, DELETE_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(deleteOptions, tokens.toArray(new String[0]));
         CardSelector cardSelector = getSelectedCard(cmd);
 
         return new DeleteCardCommand(cardSelector);
@@ -123,12 +80,16 @@ public class CardKeywordParser extends KeywordParser {
 
     //TODO: Fix issue here
     private Command handleHelp() {
+        Options addOptions = new OptionsBuilder(CARD_MODEL, ADD_ACTION).buildOptions();
+        Options deleteOptions = new OptionsBuilder(CARD_MODEL, DELETE_ACTION).buildOptions();
+        Options tagOptions = new OptionsBuilder(CARD_MODEL, TAG_ACTION).buildOptions();
+        Options viewOptions = new OptionsBuilder(CARD_MODEL, VIEW_ACTION).buildOptions();
+        Options deckOptions = new OptionsBuilder(CARD_MODEL, DECK_ACTION).buildOptions();
         // Combine all action
         String[] actionList = {ADD_ACTION, DELETE_ACTION, LIST_ACTION, TAG_ACTION, VIEW_ACTION, DECK_ACTION};
         String[] headerList = new String[]{"Adding cards",
             "Deleting cards", "List all cards", "Tagging cards", "View cards", "Adding cards to Deck"};
-        Options[] optionsList = {buildAddOptions(), buildDeleteOptions(), new Options(), buildTagOptions(),
-                buildViewOptions(), buildDeckOptions()};
+        Options[] optionsList = {addOptions, deleteOptions, tagOptions, viewOptions, deckOptions};
         String helpMessage = formatHelpMessage("card", actionList, headerList, optionsList);
         return new PrintHelpCommand(helpMessage);
     }
@@ -138,7 +99,8 @@ public class CardKeywordParser extends KeywordParser {
     }
 
     private Command handleTag(List<String> tokens) throws ParseException, InkaException {
-        CommandLine cmd = parser.parse(buildTagOptions(), tokens.toArray(new String[0]));
+        Options tagOptions = new OptionsBuilder(CARD_MODEL, TAG_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(tagOptions, tokens.toArray(new String[0]));
         CardSelector cardSelector = getSelectedCard(cmd);
 
         String[] tagNameTokens = cmd.getOptionValues("t");
@@ -153,18 +115,20 @@ public class CardKeywordParser extends KeywordParser {
     }
 
     private Command handleDeck(List<String> tokens) throws ParseException, InkaException {
-        CommandLine cmd = parser.parse(buildDeckOptions(), tokens.toArray(new String[0]));
-
+        Options deckOptions = new OptionsBuilder(CARD_MODEL, DECK_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(deckOptions, tokens.toArray(new String[0]));
         CardSelector cardSelector = getSelectedCard(cmd);
         String deckName = cmd.getOptionValue("d");
-
         return new AddCardToDeckCommand(deckName, cardSelector);
     }
 
     private Command handleView(List<String> tokens) throws ParseException, InkaException {
-        CommandLine cmd = parser.parse(buildViewOptions(), tokens.toArray(new String[0]));
+        Options viewOptions = new OptionsBuilder(CARD_MODEL, VIEW_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(viewOptions, tokens.toArray(new String[0]));
         CardSelector cardSelector = getSelectedCard(cmd);
-
         return new ViewCardCommand(cardSelector);
     }
+
+
 }
+

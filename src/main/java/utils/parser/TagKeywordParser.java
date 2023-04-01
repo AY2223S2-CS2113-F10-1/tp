@@ -18,47 +18,16 @@ import utils.exceptions.UnrecognizedCommandException;
 
 public class TagKeywordParser extends KeywordParser {
 
+    public static final String TAG_MODEL = "tag";
     public static final String DELETE_ACTION = "delete";
     public static final String EDIT_ACTION = "edit";
     public static final String HELP_ACTION = "help";
     public static final String LIST_ACTION = "list";
     public static final String DECK_ACTION = "deck";
-
     private DefaultParser parser;
 
     public TagKeywordParser() {
         this.parser = new DefaultParser(false);
-    }
-
-    private static Options buildDeleteOptions() {
-        Options options = new Options();
-        options.addRequiredOption("t", "tag", true, "tag name");
-
-        return options;
-    }
-    private static Options buildDeckOptions() {
-        Options options = new Options();
-        options.addRequiredOption("t", "tag", true, "tag name");
-        options.addRequiredOption("d", "deck", true, "deck name");
-
-        return options;
-    }
-
-    private static Options buildEditOptions() {
-        Options options = new Options();
-        options.addRequiredOption("o", "old", true, "Old tag name");
-
-        Option newTag = buildMultipleTokenOption("n", "new", true, "New tag name", true);
-        options.addOption(newTag);
-
-        return options;
-    }
-
-    private static Options buildListOptions() {
-        Options options = new Options();
-        options.addOption("t", "tag", true, "tag name (optional)");
-
-        return options;
     }
 
     @Override
@@ -81,14 +50,16 @@ public class TagKeywordParser extends KeywordParser {
     }
 
     private Command handleDelete(List<String> tokens) throws ParseException {
-        CommandLine cmd = parser.parse(buildDeleteOptions(), tokens.toArray(new String[0]));
+        Options deleteOption = new OptionsBuilder(TAG_MODEL, DELETE_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(deleteOption, tokens.toArray(new String[0]));
 
         String tagName = cmd.getOptionValue("t");
         return new DeleteTagCommand(tagName);
     }
 
     private Command handleEdit(List<String> tokens) throws ParseException {
-        CommandLine cmd = parser.parse(buildEditOptions(), tokens.toArray(new String[0]));
+        Options editOption = new OptionsBuilder(TAG_MODEL, EDIT_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(editOption, tokens.toArray(new String[0]));
 
         String oldTagName = cmd.getOptionValue("o");
         String newTagName = cmd.getOptionValue("n");
@@ -96,17 +67,25 @@ public class TagKeywordParser extends KeywordParser {
     }
 
     private Command handleHelp() {
+        Options deleteOption = new OptionsBuilder(TAG_MODEL, DELETE_ACTION).buildOptions();
+        Options editOption = new OptionsBuilder(TAG_MODEL, EDIT_ACTION).buildOptions();
+        Options listOption = new OptionsBuilder(TAG_MODEL, LIST_ACTION).buildOptions();
+
+        // For adding the deck help message for tag later
+        Options deckOption = new OptionsBuilder(TAG_MODEL, DECK_ACTION).buildOptions();
+
         // Combine all actions
         String[] actionList = {EDIT_ACTION, DELETE_ACTION, LIST_ACTION};
         String[] headerList = {"Edit existing tags", "Delete tags", "List tags"};
-        Options[] optionsList = {buildEditOptions(), buildDeleteOptions(), buildListOptions()};
+        Options[] optionsList = {editOption, deleteOption, listOption};
 
         String helpMessage = formatHelpMessage("tag", actionList, headerList, optionsList);
         return new PrintHelpCommand(helpMessage);
     }
 
     private Command handleList(List<String> tokens) throws ParseException {
-        CommandLine cmd = parser.parse(buildListOptions(), tokens.toArray(new String[0]));
+        Options listOption = new OptionsBuilder(TAG_MODEL, LIST_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(listOption, tokens.toArray(new String[0]));
 
         if (cmd.hasOption("t")) {
             String tagName = cmd.getOptionValue("t");
@@ -115,8 +94,10 @@ public class TagKeywordParser extends KeywordParser {
             return new ListTagsCommand();
         }
     }
+
     private Command handleDeck(List<String> tokens) throws ParseException, InkaException {
-        CommandLine cmd = parser.parse(buildDeckOptions(), tokens.toArray(new String[0]));
+        Options deckOption = new OptionsBuilder(TAG_MODEL, DECK_ACTION).buildOptions();
+        CommandLine cmd = parser.parse(deckOption, tokens.toArray(new String[0]));
 
         String tagUUID = cmd.getOptionValue("t");
         String deckName = cmd.getOptionValue("d");

@@ -50,7 +50,7 @@ public class AddCardToTagCommand extends Command {
 
         //add the tag uuid to the card
         tagUUID = tagToAdd.getUUID();
-        
+
         cardToAdd.addTag(tagUUID);
     }
 

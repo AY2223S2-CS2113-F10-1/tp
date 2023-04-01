@@ -28,7 +28,6 @@ public class UserInterface {
 
     public void printDivider() {
         System.out.println("_".repeat(LINE_LENGTH));
-        System.out.print("> ");
     }
 
     public void printGreeting() {
@@ -53,7 +52,6 @@ public class UserInterface {
 
     public void printNumOfQuestions(CardList cardList) {
         System.out.println("You now have " + cardList.size() + " questions in the bank.");
-        printDivider();
     }
 
     public void printAddQuestionSuccess() {
@@ -101,7 +99,6 @@ public class UserInterface {
                 System.out.println((i + 1) + "." + cardList.get(i)); // 1. question  answer
             }
         }
-        printDivider();
     }
 
     public void printTagList(TagList tagList) {
@@ -113,7 +110,6 @@ public class UserInterface {
                 System.out.println((i + 1) + "." + tagList.get(i));
             }
         }
-        printDivider();
     }
 
     public void printDeckList(DeckList deckList) {
@@ -125,7 +121,6 @@ public class UserInterface {
                 System.out.println((i + 1) + "." + deckList.get(i));
             }
         }
-        printDivider();
     }
 
     public void printTags(ArrayList<Tag> tags) {
@@ -137,32 +132,25 @@ public class UserInterface {
                 System.out.println((i + 1) + "." + tags.get(i));
             }
         }
-        printDivider();
     }
 
     public void printAddTagToCardSuccess(CardUUID cardUUID, TagUUID tagUUID) {
         System.out.println("Successfully added tag " + tagUUID + " to card " + cardUUID);
-        printDivider();
     }
 
     public void printAddCardToDeckSuccess(CardUUID cardUUID, DeckUUID deckUUID) {
         System.out.println("Successfully added card " + cardUUID + " to deck " + deckUUID);
-        printDivider();
     }
 
     public void printRemoveCardFromDeckSuccess(CardUUID cardUUID, String deckName) {
         System.out.println("Successfully removed card " + cardUUID + " from deck " + deckName);
-        printDivider();
     }
 
     public void printRemoveTagFromDeckSuccess(TagUUID tagUUID, String deckName) {
         System.out.println("Successfully removed tag " + tagUUID + " from deck " + deckName);
-        printDivider();
-
     }
     public void printAddTagToDeckSuccess(TagUUID tagUUID, DeckUUID deckUUID) {
         System.out.println("Successfully added tag " + tagUUID + " to deck " + deckUUID);
-        printDivider();
     }
 
     public void printTagCreationSuccess(String tagName) {
@@ -187,24 +175,20 @@ public class UserInterface {
 
     public void printRemoveTagFromTagList(TagUUID tagUUID) {
         System.out.println("Successfully removed tag " + tagUUID + " from the tag list.");
-        printDivider();
     }
 
     public void printRemoveDeckFromDeckList(DeckUUID deckUUID) {
         System.out.println("Successfully removed deck " + deckUUID + " from the deck list.");
-        printDivider();
     }
 
     public void printEditTagNameSuccess(String oldTagName, Tag tag) {
         System.out.println(
                 "Tag " + tag.getUUID() + "tag name has been changed from " + oldTagName + " to " + tag.getTagName());
-        printDivider();
     }
 
     public void printEditDeckNameSuccess(String oldDeckName, Deck deck) {
         System.out.println(
                 "Deck " + deck.getDeckUUID() + "deck name has been changed from " + oldDeckName
                         + " to " + deck.getDeckName());
-        printDivider();
     }
 }
