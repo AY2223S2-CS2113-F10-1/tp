@@ -6,7 +6,6 @@ import model.TagList;
 import utils.UserInterface;
 import utils.exceptions.DeckNotFoundException;
 import utils.exceptions.InkaException;
-import utils.exceptions.TagNotFoundException;
 import utils.storage.IDataStorage;
 import model.Deck;
 

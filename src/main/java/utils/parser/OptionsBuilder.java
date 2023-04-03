@@ -3,15 +3,9 @@ package utils.parser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import utils.exceptions.UnrecognizedCommandException;
 
 public class OptionsBuilder {
-    protected static final String FLAG_CARD_UUID = "c";
-    protected static final String FLAG_LONG_CARD_UUID = "card";
-    protected static final String FLAG_CARD_INDEX = "i";
-    protected static final String FLAG_LONG_CARD_INDEX = "index";
-
-    public static final String CARD_MODEl = "card";
+    public static final String CARD_MODEL = "card";
     public static final String TAG_MODEL = "tag";
     public static final String DECK_MODEL = "deck";
 
@@ -22,7 +16,10 @@ public class OptionsBuilder {
     public static final String DECK_ACTION = "deck";
     public static final String EDIT_ACTION = "edit";
     public static final String LIST_ACTION = "list";
-
+    protected static final String FLAG_CARD_UUID = "c";
+    protected static final String FLAG_LONG_CARD_UUID = "card";
+    protected static final String FLAG_CARD_INDEX = "i";
+    protected static final String FLAG_LONG_CARD_INDEX = "index";
     private static String model = null;
     private static String action = null;
 
@@ -33,41 +30,47 @@ public class OptionsBuilder {
 
     public Options buildOptions() {
         switch (model) {
-            case CARD_MODEl:
-                switch (action) {
-                    case ADD_ACTION:
-                        return buildAddOptions();
-                    case TAG_ACTION:
-                        return buildTagOptions();
-                    case VIEW_ACTION:
-                        return buildViewOptions();
-                    case DELETE_ACTION:
-                        return buildDeleteOptions(CARD_MODEl);
-                    case DECK_ACTION:
-                        return buildDeckOptions(CARD_MODEl);
-                }
-            case TAG_MODEL:
-                switch (action) {
-                    case DELETE_ACTION:
-                        return buildDeleteOptions(TAG_MODEL);
-                    case DECK_ACTION:
-                        return buildDeckOptions(TAG_MODEL);
-                    case EDIT_ACTION:
-                        return buildEditOptions(TAG_MODEL);
-                    case LIST_ACTION:
-                        return buildListOptions(TAG_MODEL);
-                }
-            case DECK_MODEL:
-                switch (action) {
-                    case DELETE_ACTION:
-                        return buildDeleteOptions(DECK_MODEL);
-                    case EDIT_ACTION:
-                        return buildEditOptions(DECK_MODEL);
-                    case LIST_ACTION:
-                        return buildListOptions(DECK_MODEL);
-                }
+        case CARD_MODEL:
+            switch (action) {
+            case ADD_ACTION:
+                return buildAddOptions();
+            case TAG_ACTION:
+                return buildTagOptions();
+            case VIEW_ACTION:
+                return buildViewOptions();
+            case DELETE_ACTION:
+                return buildDeleteOptions(CARD_MODEL);
+            case DECK_ACTION:
+                return buildDeckOptions(CARD_MODEL);
             default:
                 return null;
+            }
+        case TAG_MODEL:
+            switch (action) {
+            case DELETE_ACTION:
+                return buildDeleteOptions(TAG_MODEL);
+            case DECK_ACTION:
+                return buildDeckOptions(TAG_MODEL);
+            case EDIT_ACTION:
+                return buildEditOptions(TAG_MODEL);
+            case LIST_ACTION:
+                return buildListOptions(TAG_MODEL);
+            default:
+                return null;
+            }
+        case DECK_MODEL:
+            switch (action) {
+            case DELETE_ACTION:
+                return buildDeleteOptions(DECK_MODEL);
+            case EDIT_ACTION:
+                return buildEditOptions(DECK_MODEL);
+            case LIST_ACTION:
+                return buildListOptions(DECK_MODEL);
+            default:
+                return null;
+            }
+        default:
+            return null;
         }
     }
 
@@ -103,14 +106,18 @@ public class OptionsBuilder {
     public static Options buildDeleteOptions(String model) {
         Options options = new Options();
         switch (model) {
-            case CARD_MODEl:
-                options.addOptionGroup(buildCardSelectOption());
-            case TAG_MODEL:
-                options.addRequiredOption("t", "tag", true, "tag name");
-            case DECK_MODEL:
-                options.addRequiredOption("d", "deck", true, "deck name");
-                options.addOption("c", "card", true, "card name (optional)");
-                options.addOption("t", "tag", true, "tag name (optional)");
+        case CARD_MODEL:
+            options.addOptionGroup(buildCardSelectOption());
+            break;
+        case TAG_MODEL:
+            options.addRequiredOption("t", "tag", true, "tag name");
+            break;
+        case DECK_MODEL:
+            options.addRequiredOption("d", "deck", true, "deck name");
+            options.addOption("c", "card", true, "card name (optional)");
+            options.addOption("t", "tag", true, "tag name (optional)");
+            break;
+        default:
         }
         return options;
     }
@@ -118,10 +125,13 @@ public class OptionsBuilder {
     public static Options buildDeckOptions(String model) {
         Options options = new Options();
         switch (model) {
-            case CARD_MODEl:
-                options.addOptionGroup(buildCardSelectOption());
-            case TAG_MODEL:
-                options.addRequiredOption("t", "tag", true, "tag name");
+        case CARD_MODEL:
+            options.addOptionGroup(buildCardSelectOption());
+            break;
+        case TAG_MODEL:
+            options.addRequiredOption("t", "tag", true, "tag name");
+            break;
+        default:
         }
         options.addRequiredOption("d", "deck", true, "deck name");
         return options;
@@ -130,13 +140,17 @@ public class OptionsBuilder {
     private static Options buildEditOptions(String model) {
         Options options = new Options();
         switch (model) {
-            case TAG_MODEL:
-                options.addRequiredOption("o", "old", true, "Old tag name");
-                Option newTag = buildMultipleTokenOption("n", "new", true, "New tag name", true);
-                options.addOption(newTag);
-            case DECK_MODEL:
-                options.addRequiredOption("o", "old", true, "Old deck name");
-                options.addRequiredOption("n", "new", true, "New deck name");
+        case TAG_MODEL:
+            options.addRequiredOption("o", "old", true, "Old tag name");
+            Option newTag = buildMultipleTokenOption("n", "new", true, "New tag name", true);
+            options.addOption(newTag);
+            break;
+        case DECK_MODEL:
+            options.addRequiredOption("o", "old", true, "Old deck name");
+            options.addRequiredOption("n", "new", true, "New deck name");
+            break;
+        default:
+            return null;
         }
         return options;
     }
@@ -144,11 +158,15 @@ public class OptionsBuilder {
     private static Options buildListOptions(String model) {
         Options options = new Options();
         switch (model) {
-            case TAG_MODEL:
-                options.addOption("t", "tag", true, "tag name (optional)");
-            case DECK_MODEL:
-                options.addOption("c", "cards", true, "deck name to list cards from (optional)");
-                options.addOption("t", "tags", true, "deck name to list tags from (optional)");
+        case TAG_MODEL:
+            options.addOption("t", "tag", true, "tag name (optional)");
+            break;
+        case DECK_MODEL:
+            options.addOption("c", "cards", true, "deck name to list cards from (optional)");
+            options.addOption("t", "tags", true, "deck name to list tags from (optional)");
+            break;
+        default:
+            return null;
         }
         return options;
     }
